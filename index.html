@@ -20,7 +20,6 @@
     overflow-x: hidden;
   }
 
-  /* Estrellas */
   .stars {
     position: fixed;
     top: 0;
@@ -41,7 +40,6 @@
     100% { opacity: 0.9; transform: scale(1.4); }
   }
 
-  /* Confeti */
   .confetti {
     position: fixed;
     top: 0;
@@ -65,7 +63,6 @@
     100% { top: 110vh; transform: rotate(720deg); opacity: 0; }
   }
 
-  /* Contenedor principal */
   .container {
     position: relative;
     z-index: 2;
@@ -78,7 +75,6 @@
     gap: 28px;
   }
 
-  /* Encabezado */
   .header { text-align: center; animation: aparecer 0.8s both; }
   .badge {
     display: inline-block;
@@ -113,7 +109,6 @@
   }
   .subtitulo { font-size: 1rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
 
-  /* Collage */
   .collage {
     width: 100%;
     display: grid;
@@ -122,16 +117,24 @@
     gap: 12px;
     animation: aparecer 0.9s 0.3s both;
   }
-  .tarjeta {
+  .photo-card {
     position: relative;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     transition: transform 0.3s;
   }
-  .tarjeta:hover { transform: scale(1.03) rotate(-1deg); }
-  .grande { grid-row: 1 / 3; }
-  .etiqueta {
+  .photo-card:hover { transform: scale(1.03) rotate(-1deg); }
+  .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-card.tall { grid-row: 1 / 3; }
+  .photo-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.45));
+    pointer-events: none;
+  }
+  .sticker {
     position: absolute;
     bottom: 12px;
     right: 12px;
@@ -139,11 +142,13 @@
     color: #0d0d1a;
     font-size: 0.65rem;
     font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     padding: 4px 10px;
     border-radius: 99px;
     z-index: 2;
   }
-  .icono {
+  .floater {
     position: absolute;
     top: 10px;
     left: 12px;
@@ -156,7 +161,6 @@
     50% { transform: translateY(-8px) rotate(8deg); }
   }
 
-  /* Mensaje */
   .mensaje {
     width: 100%;
     background: rgba(255,255,255,0.04);
@@ -172,7 +176,6 @@
   .resaltado { color: #f9d342; font-weight: 900; }
   .firma { margin-top: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
 
-  /* Footer */
   .footer { text-align: center; animation: aparecer 0.9s 0.7s both; }
   .nombre {
     font-family: 'Pacifico', cursive;
@@ -202,34 +205,29 @@
     <div class="subtitulo">años de pura vida 🎂</div>
   </div>
 
-  <!-- COLLAGE SIN IMÁGENES EXTERNAS -->
+  <!-- COLLAGE CON TUS FOTOS REALES -->
   <div class="collage">
-    <!-- Tarjeta Venezuela -->
-    <div class="tarjeta grande" style="background: linear-gradient(135deg, #2b1b3a, #1a4a3a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-      <div class="icono">🇻🇪</div>
-      <div style="font-size: 4rem; margin-bottom: 10px;">🏔️🌴🎵</div>
-      <div style="font-family:'Pacifico',cursive; font-size: 1.6rem; color:#f9d342; text-align:center;">¡Mi Venezuela Linda!</div>
-      <div style="color:rgba(255,255,255,0.8); font-size:0.8rem; margin-top:5px;">Tierrita querida</div>
-      <div class="etiqueta">Con amor 🇻🇪</div>
+    <!-- Foto 1: Venezuela (grande izquierda) -->
+    <div class="photo-card tall">
+      <span class="floater">🇻🇪</span>
+      <img src="Screenshot_20260526_142951_Photos.jpg" alt="Venezuela">
+      <div class="sticker">Mi Venezuela</div>
     </div>
-
-    <!-- Tarjeta Recuerdo -->
-    <div class="tarjeta" style="background: linear-gradient(135deg, #3a1b4a, #1b3a4a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-      <div class="icono">❤️</div>
-      <div style="font-size: 3rem;">🤗💫✨</div>
-      <div style="font-family:'Nunito',sans-serif; font-size: 1rem; color:#f9d342; font-weight:bold; margin-top:8px;">Siempre juntos</div>
-      <div class="etiqueta">Recuerdo especial</div>
+    
+    <!-- Foto 2: Selfie/Recuerdo -->
+    <div class="photo-card">
+      <span class="floater">❤️</span>
+      <img src="Screenshot_20260526_142909_Photos.jpg" alt="Selfie">
+      <div class="sticker">Siempre juntos</div>
     </div>
-
-    <!-- Tarjeta Celebración -->
-    <div class="tarjeta" style="background: linear-gradient(135deg,#0d2b3e,#2b1b3a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-      <div style="font-size: 3rem;">🎂🎉🎈</div>
-      <div style="font-family:'Pacifico',cursive; font-size: 1.2rem; color:#ffaa44;">¡A celebrar!</div>
-      <div class="etiqueta">El más tremendo</div>
+    
+    <!-- Tarjeta decorativa (la tercera) -->
+    <div class="photo-card" style="background: linear-gradient(135deg,#1a0a2e,#0a1a2e); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
+      <div style="font-size:3.5rem; animation: flotar 2.5s infinite;">🎉</div>
+      <div style="font-family:'Pacifico',cursive; font-size:1.1rem; color:#f9d342; text-align:center; padding:0 10px; line-height:1.3;">El más<br>tremendo</div>
     </div>
   </div>
 
-  <!-- Mensaje -->
   <div class="mensaje">
     <div class="emojis">🎂 🎈 🌟 🎊 🥳</div>
     <p>
@@ -242,7 +240,6 @@
     <div class="firma">— Con todo el amor del mundo 💛</div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     <div class="nombre">Silva Salazar ✨</div>
     <div class="familia">Familia • Amor • Siempre</div>
@@ -250,7 +247,6 @@
 </div>
 
 <script>
-  // Estrellas
   for(let i = 0; i < 80; i++) {
     let star = document.createElement('div');
     star.className = 'star';
@@ -266,7 +262,6 @@
     document.getElementById('stars').appendChild(star);
   }
 
-  // Confeti
   const colores = ['#f9d342','#f97316','#ff6b6b','#a78bfa','#60a5fa','#34d399','#fff'];
   for(let i = 0; i < 55; i++) {
     let c = document.createElement('div');
