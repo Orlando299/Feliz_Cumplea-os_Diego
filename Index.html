@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Feliz Cumpleaños!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 40%, #0a1a2e 100%);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Stars */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.1; transform: scale(1); }
+    to { opacity: 0.9; transform: scale(1.4); }
+  }
+
+  /* Confetti */
+  .confetti-wrap {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    overflow: hidden;
+  }
+  .confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: var(--w, 10px);
+    height: var(--h, 16px);
+    background: var(--c, #f9d342);
+    border-radius: 2px;
+    left: var(--l, 50%);
+    animation: fall var(--fd, 4s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    transform-origin: center;
+  }
+  @keyframes fall {
+    0%   { top: -20px; transform: rotate(0deg) translateX(0); opacity: 1; }
+    80%  { opacity: 1; }
+    100% { top: 110vh; transform: rotate(720deg) translateX(calc(var(--drift, 0px))); opacity: 0; }
+  }
+
+  /* Main container */
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .header .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #f9d342, #f97316);
+    color: #0d0d1a;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 99px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 20px rgba(249,211,66,0.5);
+  }
+  .header h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    line-height: 1.1;
+    background: linear-gradient(135deg, #f9d342 0%, #ff6b6b 50%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 18px rgba(249,107,107,0.4));
+  }
+  .header .age {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(5rem, 20vw, 7rem);
+    background: linear-gradient(135deg, #f9d342, #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    filter: drop-shadow(0 0 30px rgba(249,211,66,0.6));
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { filter: drop-shadow(0 0 30px rgba(249,211,66,0.6)); }
+    50%      { filter: drop-shadow(0 0 55px rgba(249,211,66,1)); }
+  }
+  .header .subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  /* Photo collage */
+  .collage {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 240px 240px;
+    gap: 12px;
+    animation: fadeUp 0.9s 0.3s both;
+  }
+
+  .photo-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .photo-card:hover {
+    transform: scale(1.03) rotate(-1deg);
+    box-shadow: 0 16px 48px rgba(249,211,66,0.25);
+  }
+  .photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.45));
+    pointer-events: none;
+  }
+
+  /* First photo spans full left column height */
+  .photo-card.tall {
+    grid-row: 1 / 3;
+  }
+
+  /* Sticker on photo */
+  .sticker {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #f9d342, #f97316);
+    color: #0d0d1a;
+    font-size: 0.65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 99px;
+    z-index: 2;
+  }
+
+  /* Heart emoji floater */
+  .floater {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    font-size: 1.5rem;
+    z-index: 2;
+    animation: floatBob 3s ease-in-out infinite;
+  }
+  @keyframes floatBob {
+    0%,100% { transform: translateY(0) rotate(-8deg); }
+    50%      { transform: translateY(-8px) rotate(8deg); }
+  }
+
+  /* Message card */
+  .message-card {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(249,211,66,0.2);
+    border-radius: 24px;
+    padding: 28px 28px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgba(249,211,66,0.07);
+    animation: fadeUp 0.9s 0.5s both;
+    text-align: center;
+  }
+  .message-card .emoji-row {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    letter-spacing: 0.15em;
+    animation: floatBob 4s ease-in-out infinite;
+  }
+  .message-card p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.88);
+    font-weight: 600;
+  }
+  .message-card .highlight {
+    color: #f9d342;
+    font-weight: 900;
+  }
+  .message-card .signature {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.08em;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    animation: fadeUp 0.9s 0.7s both;
+  }
+  .footer .name-tag {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    background: linear-gradient(90deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .footer .family {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.12em;
+    margin-top: 4px;
+  }
+
+  /* Keyframes */
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Confetti -->
+<div class="confetti-wrap" id="confetti"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">⭐ Día Especial ⭐</div>
+    <h1>¡Feliz<br>Cumpleaños!</h1>
+    <div class="age">15</div>
+    <div class="subtitle">años de pura vida 🎂</div>
+  </div>
+
+  <!-- Collage -->
+  <div class="collage">
+    <!-- Photo 1: swing / Venezuela — tall left -->
+    <div class="photo-card tall">
+      <span class="floater">🇻🇪</span>
+      <img src="/mnt/user-data/uploads/1000974090.jpg" alt="Venezuela">
+      <div class="sticker">Mi Venezuela</div>
+    </div>
+    <!-- Photo 2: selfie top-right -->
+    <div class="photo-card">
+      <span class="floater">❤️</span>
+      <img src="/mnt/user-data/uploads/1000974091.jpg" alt="Selfie">
+      <div class="sticker">Siempre juntos</div>
+    </div>
+    <!-- Decorative tile bottom-right -->
+    <div class="photo-card" style="background: linear-gradient(135deg,#1a0a2e,#0a1a2e); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
+      <div style="font-size:3.5rem; animation: floatBob 2.5s ease-in-out infinite;">🎉</div>
+      <div style="font-family:'Pacifico',cursive; font-size:1.1rem; color:#f9d342; text-align:center; padding:0 10px; line-height:1.3;">El más<br>tremendo</div>
+    </div>
+  </div>
+
+  <!-- Message -->
+  <div class="message-card">
+    <div class="emoji-row">🎂 🎈 🌟 🎊 🥳</div>
+    <p>
+      Hoy celebramos <span class="highlight">15 años</span> de tener al más tremendo de los
+      <span class="highlight">Silva Salazar</span> en nuestras vidas.<br><br>
+      Que este nuevo año que comienza esté lleno de sueños cumplidos,
+      aventuras increíbles y momentos que guarden en el corazón para siempre.<br><br>
+      Eres orgullo, alegría y amor. <span class="highlight">¡Que brilles siempre, campeón!</span> 🏆
+    </p>
+    <div class="signature">— Con todo el amor del mundo 💛</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="name-tag">Silva Salazar ✨</div>
+    <div class="family">Familia • Amor • Siempre</div>
+  </div>
+
+</div>
+
+<script>
+  // Stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.classList.add('star');
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%;
+      left:${Math.random()*100}%;
+      --d:${(Math.random()*4+2).toFixed(1)}s;
+      animation-delay:${(Math.random()*5).toFixed(1)}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // Confetti
+  const confettiEl = document.getElementById('confetti');
+  const colors = ['#f9d342','#f97316','#ff6b6b','#a78bfa','#60a5fa','#34d399','#fff'];
+  for (let i = 0; i < 55; i++) {
+    const c = document.createElement('div');
+    c.classList.add('confetti-piece');
+    const w = Math.random()*8+6;
+    const h = Math.random()*12+8;
+    c.style.cssText = `
+      --w:${w}px; --h:${h}px;
+      --c:${colors[Math.floor(Math.random()*colors.length)]};
+      --l:${Math.random()*100}%;
+      --fd:${(Math.random()*4+3).toFixed(1)}s;
+      --delay:${(Math.random()*5).toFixed(1)}s;
+      --drift:${(Math.random()*80-40).toFixed(0)}px;
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      opacity:${(Math.random()*0.5+0.5).toFixed(2)};
+    `;
+    confettiEl.appendChild(c);
+  }
+</script>
+</body>
+</html>
