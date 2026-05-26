@@ -7,47 +7,65 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;900&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
   body {
     min-height: 100vh;
     background: linear-gradient(135deg, #0d0d1a 0%, #1a0a2e 40%, #0a1a2e 100%);
     font-family: 'Nunito', sans-serif;
     overflow-x: hidden;
-    position: relative;
   }
 
-  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  /* Estrellas */
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
   .star {
     position: absolute;
-    background: #fff;
+    background: white;
     border-radius: 50%;
-    animation: twinkle var(--d, 3s) infinite alternate;
+    animation: twinkle 3s infinite alternate;
   }
   @keyframes twinkle {
-    from { opacity: 0.1; transform: scale(1); }
-    to { opacity: 0.9; transform: scale(1.4); }
+    0% { opacity: 0.1; transform: scale(1); }
+    100% { opacity: 0.9; transform: scale(1.4); }
   }
 
-  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  /* Confeti */
+  .confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
   .confetti-piece {
     position: absolute;
     top: -20px;
-    width: var(--w, 10px);
-    height: var(--h, 16px);
-    background: var(--c, #f9d342);
-    border-radius: 2px;
-    left: var(--l, 50%);
-    animation: fall var(--fd, 4s) linear infinite;
-    animation-delay: var(--delay, 0s);
-    transform-origin: center;
+    width: 10px;
+    height: 16px;
+    background: #f9d342;
+    animation: caida 4s linear infinite;
   }
-  @keyframes fall {
-    0%   { top: -20px; transform: rotate(0deg) translateX(0); opacity: 1; }
-    80%  { opacity: 1; }
-    100% { top: 110vh; transform: rotate(720deg) translateX(calc(var(--drift, 0px))); opacity: 0; }
+  @keyframes caida {
+    0% { top: -20px; transform: rotate(0deg); opacity: 1; }
+    100% { top: 110vh; transform: rotate(720deg); opacity: 0; }
   }
 
+  /* Contenedor principal */
   .container {
     position: relative;
     z-index: 2;
@@ -60,8 +78,9 @@
     gap: 28px;
   }
 
-  .header { text-align: center; animation: popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) both; }
-  .header .badge {
+  /* Encabezado */
+  .header { text-align: center; animation: aparecer 0.8s both; }
+  .badge {
     display: inline-block;
     background: linear-gradient(90deg, #f9d342, #f97316);
     color: #0d0d1a;
@@ -72,55 +91,47 @@
     padding: 5px 18px;
     border-radius: 99px;
     margin-bottom: 12px;
-    box-shadow: 0 0 20px rgba(249,211,66,0.5);
   }
-  .header h1 {
+  h1 {
     font-family: 'Pacifico', cursive;
     font-size: clamp(2.4rem, 9vw, 3.4rem);
-    line-height: 1.1;
-    background: linear-gradient(135deg, #f9d342 0%, #ff6b6b 50%, #a78bfa 100%);
+    background: linear-gradient(135deg, #f9d342, #ff6b6b, #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 18px rgba(249,107,107,0.4));
   }
-  .header .age {
+  .edad {
     font-family: 'Pacifico', cursive;
     font-size: clamp(5rem, 20vw, 7rem);
     background: linear-gradient(135deg, #f9d342, #f97316);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    filter: drop-shadow(0 0 30px rgba(249,211,66,0.6));
-    animation: pulse 2s ease-in-out infinite;
+    animation: latido 2s infinite;
   }
-  @keyframes pulse {
-    0%,100% { filter: drop-shadow(0 0 30px rgba(249,211,66,0.6)); }
-    50% { filter: drop-shadow(0 0 55px rgba(249,211,66,1)); }
+  @keyframes latido {
+    0%,100% { text-shadow: 0 0 30px rgba(249,211,66,0.6); }
+    50% { text-shadow: 0 0 55px rgba(249,211,66,1); }
   }
-  .header .subtitle { font-size: 1rem; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; margin-top: 4px; }
+  .subtitulo { font-size: 1rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
 
+  /* Collage */
   .collage {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 240px 240px;
     gap: 12px;
-    animation: fadeUp 0.9s 0.3s both;
+    animation: aparecer 0.9s 0.3s both;
   }
-
-  .photo-card {
+  .tarjeta {
     position: relative;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s;
   }
-  .photo-card:hover { transform: scale(1.03) rotate(-1deg); box-shadow: 0 16px 48px rgba(249,211,66,0.25); }
-  .photo-card.tall { grid-row: 1 / 3; }
-  
-  .sticker {
+  .tarjeta:hover { transform: scale(1.03) rotate(-1deg); }
+  .grande { grid-row: 1 / 3; }
+  .etiqueta {
     position: absolute;
     bottom: 12px;
     right: 12px;
@@ -128,163 +139,148 @@
     color: #0d0d1a;
     font-size: 0.65rem;
     font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
     padding: 4px 10px;
     border-radius: 99px;
     z-index: 2;
   }
-  
-  .floater {
+  .icono {
     position: absolute;
     top: 10px;
     left: 12px;
     font-size: 1.5rem;
     z-index: 2;
-    animation: floatBob 3s ease-in-out infinite;
+    animation: flotar 3s infinite;
   }
-  
-  @keyframes floatBob {
+  @keyframes flotar {
     0%,100% { transform: translateY(0) rotate(-8deg); }
     50% { transform: translateY(-8px) rotate(8deg); }
   }
 
-  .message-card {
+  /* Mensaje */
+  .mensaje {
     width: 100%;
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(249,211,66,0.2);
     border-radius: 24px;
-    padding: 28px 28px;
+    padding: 28px;
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 0 40px rgba(249,211,66,0.07);
-    animation: fadeUp 0.9s 0.5s both;
     text-align: center;
+    animation: aparecer 0.9s 0.5s both;
   }
-  .message-card .emoji-row { font-size: 1.8rem; margin-bottom: 16px; letter-spacing: 0.15em; animation: floatBob 4s ease-in-out infinite; }
-  .message-card p { font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,0.88); font-weight: 600; }
-  .message-card .highlight { color: #f9d342; font-weight: 900; }
-  .message-card .signature { margin-top: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; }
+  .emojis { font-size: 1.8rem; margin-bottom: 16px; animation: flotar 4s infinite; }
+  .mensaje p { font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,0.88); font-weight: 600; }
+  .resaltado { color: #f9d342; font-weight: 900; }
+  .firma { margin-top: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
 
-  .footer { text-align: center; animation: fadeUp 0.9s 0.7s both; }
-  .footer .name-tag {
+  /* Footer */
+  .footer { text-align: center; animation: aparecer 0.9s 0.7s both; }
+  .nombre {
     font-family: 'Pacifico', cursive;
     font-size: clamp(1.6rem, 7vw, 2.2rem);
     background: linear-gradient(90deg, #a78bfa, #60a5fa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
-  .footer .family { font-size: 0.9rem; color: rgba(255,255,255,0.45); letter-spacing: 0.12em; margin-top: 4px; }
+  .familia { font-size: 0.9rem; color: rgba(255,255,255,0.45); margin-top: 4px; }
 
-  @keyframes popIn {
+  @keyframes aparecer {
     from { opacity: 0; transform: scale(0.7); }
     to { opacity: 1; transform: scale(1); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 </head>
 <body>
 
 <div class="stars" id="stars"></div>
-<div class="confetti-wrap" id="confetti"></div>
+<div class="confetti" id="confetti"></div>
 
 <div class="container">
-
   <div class="header">
     <div class="badge">⭐ Día Especial ⭐</div>
-    <h1>¡Feliz<br>Cumpleaños!</h1>
-    <div class="age">15</div>
-    <div class="subtitle">años de pura vida 🎂</div>
+    <h1>¡Feliz Cumpleaños!</h1>
+    <div class="edad">15</div>
+    <div class="subtitulo">años de pura vida 🎂</div>
   </div>
 
-  <!-- COLLAGE DECORATIVO - SIN DEPENDENCIA DE ARCHIVOS EXTERNOS -->
+  <!-- COLLAGE SIN IMÁGENES EXTERNAS -->
   <div class="collage">
-    <!-- Tarjeta 1: Venezuela (grande izquierda) -->
-    <div class="photo-card tall" style="background: linear-gradient(135deg, #2b1b3a, #1a4a3a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-      <span class="floater">🇻🇪</span>
+    <!-- Tarjeta Venezuela -->
+    <div class="tarjeta grande" style="background: linear-gradient(135deg, #2b1b3a, #1a4a3a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+      <div class="icono">🇻🇪</div>
       <div style="font-size: 4rem; margin-bottom: 10px;">🏔️🌴🎵</div>
       <div style="font-family:'Pacifico',cursive; font-size: 1.6rem; color:#f9d342; text-align:center;">¡Mi Venezuela Linda!</div>
-      <div style="color:rgba(255,255,255,0.8); text-align:center; font-size:0.8rem; margin-top:5px;">Tierrita querida</div>
-      <div class="sticker">Con amor 🇻🇪</div>
+      <div style="color:rgba(255,255,255,0.8); font-size:0.8rem; margin-top:5px;">Tierrita querida</div>
+      <div class="etiqueta">Con amor 🇻🇪</div>
     </div>
-    
-    <!-- Tarjeta 2: Recuerdo / Selfie -->
-    <div class="photo-card" style="background: linear-gradient(135deg, #3a1b4a, #1b3a4a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-      <span class="floater">❤️</span>
+
+    <!-- Tarjeta Recuerdo -->
+    <div class="tarjeta" style="background: linear-gradient(135deg, #3a1b4a, #1b3a4a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+      <div class="icono">❤️</div>
       <div style="font-size: 3rem;">🤗💫✨</div>
-      <div style="font-family:'Nunito',sans-serif; font-size: 1rem; color:#f9d342; text-align:center; font-weight:bold; margin-top:8px;">Siempre juntos</div>
-      <div class="sticker">Recuerdo especial</div>
+      <div style="font-family:'Nunito',sans-serif; font-size: 1rem; color:#f9d342; font-weight:bold; margin-top:8px;">Siempre juntos</div>
+      <div class="etiqueta">Recuerdo especial</div>
     </div>
-    
-    <!-- Tarjeta 3: Celebración -->
-    <div class="photo-card" style="background: linear-gradient(135deg,#0d2b3e,#2b1b3a); display:flex; align-items:center; justify-content:center; flex-direction:column;">
+
+    <!-- Tarjeta Celebración -->
+    <div class="tarjeta" style="background: linear-gradient(135deg,#0d2b3e,#2b1b3a); display: flex; align-items: center; justify-content: center; flex-direction: column;">
       <div style="font-size: 3rem;">🎂🎉🎈</div>
-      <div style="font-family:'Pacifico',cursive; font-size: 1.2rem; color:#ffaa44; text-align:center;">¡A celebrar!</div>
-      <div class="sticker">El más tremendo</div>
+      <div style="font-family:'Pacifico',cursive; font-size: 1.2rem; color:#ffaa44;">¡A celebrar!</div>
+      <div class="etiqueta">El más tremendo</div>
     </div>
   </div>
 
   <!-- Mensaje -->
-  <div class="message-card">
-    <div class="emoji-row">🎂 🎈 🌟 🎊 🥳</div>
+  <div class="mensaje">
+    <div class="emojis">🎂 🎈 🌟 🎊 🥳</div>
     <p>
-      Hoy celebramos <span class="highlight">15 años</span> de tener al más tremendo de los
-      <span class="highlight">Silva Salazar</span> en nuestras vidas.<br><br>
-      Que este nuevo año que comienza esté lleno de sueños cumplidos,
+      Hoy celebramos <span class="resaltado">15 años</span> de tener al más tremendo de los
+      <span class="resaltado">Silva Salazar</span> en nuestras vidas.<br><br>
+      Que este nuevo año esté lleno de sueños cumplidos,
       aventuras increíbles y momentos que guarden en el corazón para siempre.<br><br>
-      Eres orgullo, alegría y amor. <span class="highlight">¡Que brilles siempre, campeón!</span> 🏆
+      Eres orgullo, alegría y amor. <span class="resaltado">¡Que brilles siempre, campeón!</span> 🏆
     </p>
-    <div class="signature">— Con todo el amor del mundo 💛</div>
+    <div class="firma">— Con todo el amor del mundo 💛</div>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    <div class="name-tag">Silva Salazar ✨</div>
-    <div class="family">Familia • Amor • Siempre</div>
+    <div class="nombre">Silva Salazar ✨</div>
+    <div class="familia">Familia • Amor • Siempre</div>
   </div>
-
 </div>
 
 <script>
-  // Generar estrellas
-  const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 80; i++) {
-    const s = document.createElement('div');
-    s.classList.add('star');
-    const size = Math.random() * 3 + 1;
-    s.style.cssText = `
-      width:${size}px; height:${size}px;
-      top:${Math.random()*100}%;
-      left:${Math.random()*100}%;
-      --d:${(Math.random()*4+2).toFixed(1)}s;
-      animation-delay:${(Math.random()*5).toFixed(1)}s;
+  // Estrellas
+  for(let i = 0; i < 80; i++) {
+    let star = document.createElement('div');
+    star.className = 'star';
+    let size = Math.random() * 3 + 1;
+    star.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      top: ${Math.random() * 100}%;
+      left: ${Math.random() * 100}%;
+      animation-duration: ${Math.random() * 4 + 2}s;
+      animation-delay: ${Math.random() * 5}s;
     `;
-    starsEl.appendChild(s);
+    document.getElementById('stars').appendChild(star);
   }
 
-  // Generar confeti
-  const confettiEl = document.getElementById('confetti');
-  const colors = ['#f9d342','#f97316','#ff6b6b','#a78bfa','#60a5fa','#34d399','#fff'];
-  for (let i = 0; i < 55; i++) {
-    const c = document.createElement('div');
-    c.classList.add('confetti-piece');
-    const w = Math.random()*8+6;
-    const h = Math.random()*12+8;
+  // Confeti
+  const colores = ['#f9d342','#f97316','#ff6b6b','#a78bfa','#60a5fa','#34d399','#fff'];
+  for(let i = 0; i < 55; i++) {
+    let c = document.createElement('div');
+    c.className = 'confetti-piece';
     c.style.cssText = `
-      --w:${w}px; --h:${h}px;
-      --c:${colors[Math.floor(Math.random()*colors.length)]};
-      --l:${Math.random()*100}%;
-      --fd:${(Math.random()*4+3).toFixed(1)}s;
-      --delay:${(Math.random()*5).toFixed(1)}s;
-      --drift:${(Math.random()*80-40).toFixed(0)}px;
-      border-radius:${Math.random()>0.5?'50%':'2px'};
-      opacity:${(Math.random()*0.5+0.5).toFixed(2)};
+      width: ${Math.random() * 8 + 6}px;
+      height: ${Math.random() * 12 + 8}px;
+      background: ${colores[Math.floor(Math.random() * colores.length)]};
+      left: ${Math.random() * 100}%;
+      animation-duration: ${Math.random() * 4 + 3}s;
+      animation-delay: ${Math.random() * 5}s;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
     `;
-    confettiEl.appendChild(c);
+    document.getElementById('confetti').appendChild(c);
   }
 </script>
 </body>
